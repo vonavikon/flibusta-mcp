@@ -105,4 +105,4 @@ Flibusta раздаёт книги в условиях, которые по-ра
 
 ## Лицензия
 
-MIT © Konstantin Ivanov
+MIT © vonavikon

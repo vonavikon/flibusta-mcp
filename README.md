@@ -1,8 +1,10 @@
 # flibusta-mcp
 
-MCP-сервер для поиска и скачивания книг с [Flibusta](https://flibusta.is) через любой AI-клиент с поддержкой MCP: Claude Code, Claude Desktop, Cursor и другие.
+[![npm version](https://img.shields.io/npm/v/flibusta-mcp)](https://www.npmjs.com/package/flibusta-mcp)
 
-У MCP-сервера нет своего LLM и ключей API: запрос разбирает вызывающий AI и передаёт в инструмент уже структурированные `title`/`author`. Секретов нет.
+MCP-сервер для поиска и скачивания книг с [Flibusta](https://flibusta.is) через AI-клиенты с поддержкой MCP: Claude Code, Claude Desktop, Cursor.
+
+Сервер работает без собственного LLM и без API-ключей: поисковый запрос разбирает вызвавший клиент и передаёт в инструменты уже структурированные `title`/`author`.
 
 ## Возможности
 
@@ -69,7 +71,7 @@ claude mcp add flibusta -- node "$PWD/dist/index.js"
 
 ## Использование
 
-После подключения просто попросите свой AI:
+После подключения задайте клиенту запрос:
 
 > Найди «Дюну» Фрэнка Герберта и скачай в fb2.
 
@@ -83,7 +85,7 @@ npm test         # unit-тесты (vitest)
 npm run build    # сборка в dist/
 ```
 
-Smoke-тест сервера вручную:
+Проверка через MCP Inspector:
 
 ```bash
 npx @modelcontextprotocol/inspector node dist/index.js

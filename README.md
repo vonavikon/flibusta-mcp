@@ -1,6 +1,7 @@
 # flibusta-mcp
 
 [![npm version](https://img.shields.io/npm/v/flibusta-mcp)](https://www.npmjs.com/package/flibusta-mcp)
+[![GitHub](https://img.shields.io/badge/GitHub-vonavikon%2Fflibusta--mcp-181717?logo=github)](https://github.com/vonavikon/flibusta-mcp)
 
 MCP-сервер для поиска и скачивания книг с [Flibusta](https://flibusta.is) через AI-клиенты с поддержкой MCP: Claude Code, Claude Desktop, Cursor.
 

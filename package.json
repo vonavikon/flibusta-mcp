@@ -1,6 +1,6 @@
 {
   "name": "flibusta-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP-сервер для поиска и скачивания книг с Flibusta через любой AI-клиент с поддержкой MCP",
   "type": "module",
   "bin": {

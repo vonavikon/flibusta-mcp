@@ -13,6 +13,7 @@ vi.mock("flibusta", () => ({
 }));
 
 import { createFlibusta, extractId } from "../src/flibusta.js";
+import { rankBooks } from "../src/rank.js";
 
 // Сырой OPDS-ответ: описание = аннотация + блок «Формат: … Размер: …».
 const RAW = {
@@ -62,6 +63,35 @@ describe("createFlibusta", () => {
     const f = createFlibusta({ base: "https://flibusta.is" });
     const out = await f.searchBooks({ title: "Шерлок" });
     expect(out).toHaveLength(1);
+  });
+
+  it("normalizes numeric titles and dedups equivalent numeric and string titles", async () => {
+    stub.getAuthors.mockResolvedValue([{ id: 42 }]);
+    stub.getBooksByAuthorOpds.mockResolvedValue([
+      { ...RAW, title: 1408 },
+      { ...RAW, title: "1408" },
+      { ...RAW, title: 1922 },
+      { ...RAW, title: 0 },
+    ]);
+    const f = createFlibusta({ base: "https://flibusta.is" });
+    const out = await f.searchBooks({ authors: ["Стивен Кинг"] });
+    expect(out.map((b) => b.title)).toEqual(["1408", "1922", "0"]);
+    expect(rankBooks(out, { authors: ["Стивен Кинг"] }, 5)).toEqual(out);
+    expect(rankBooks(out, { title: "1922" }, 1)[0].title).toBe("1922");
+  });
+
+  it.each([null, undefined])("uses a fallback for missing title %s", async (title) => {
+    stub.getBooksByNameFromOpds.mockResolvedValue([{ ...RAW, title }]);
+    const f = createFlibusta({ base: "https://flibusta.is" });
+    const out = await f.searchBooks({ title: "Книга" });
+    expect(out[0].title).toBe("Без названия");
+  });
+
+  it("normalizes numeric titles from the fallback mirror", async () => {
+    stub.getBooksByNameFromOpds.mockResolvedValueOnce([]).mockResolvedValueOnce([{ ...RAW, title: 1408 }]);
+    const f = createFlibusta({ base: "https://flibusta.is", fallbackBase: "https://flibusta.local" });
+    const out = await f.searchBooks({ title: "1408" });
+    expect(out[0].title).toBe("1408");
   });
 
   it("falls back to fallbackBase when main returns nothing", async () => {

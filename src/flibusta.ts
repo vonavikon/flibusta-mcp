@@ -71,7 +71,8 @@ function normalize(raw: any, base: string): FlibustaBook {
     .filter((f) => f && f !== "unknown");
   const { annotation, meta } = parseDescription(raw.description);
   return {
-    title: raw.title ?? "Без названия",
+    // OPDS parsing can return numeric-only titles (e.g. 1408) as numbers.
+    title: String(raw.title ?? "Без названия"),
     author: raw.author?.[0]?.name,
     category: raw.categories?.[0],
     description: annotation,

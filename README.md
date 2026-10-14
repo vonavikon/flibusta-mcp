@@ -3,28 +3,30 @@
 [![npm version](https://img.shields.io/npm/v/flibusta-mcp)](https://www.npmjs.com/package/flibusta-mcp)
 [![GitHub](https://img.shields.io/badge/GitHub-vonavikon%2Fflibusta--mcp-181717?logo=github)](https://github.com/vonavikon/flibusta-mcp)
 
-MCP-сервер для поиска и скачивания книг с [Flibusta](https://flibusta.is). Подключается к Claude Code, Claude Desktop и Cursor.
+English | [Русский](README.ru.md)
 
-У сервера нет собственного LLM и нет API-ключей. Поисковый запрос разбирает вызвавший клиент, а сюда передаёт уже структурированные `title` и `author`.
+MCP server for searching and downloading books from [Flibusta](https://flibusta.is). Works with Claude Code, Claude Desktop and Cursor.
 
-## Что умеет
+The server has no LLM of its own and needs no API keys. The calling client parses the request and passes structured `title` and `author` here.
 
-- `search_books` ищет по названию и автору и отдаёт ранжированный список: id, название, автор, форматы, размер, число скачиваний, краткое описание.
-- `download_book` скачивает книгу в нужном формате в папку загрузок и возвращает путь. Форматы `fb2/txt/rtf/html/doc` приходят от Flibusta в zip-обёртке и распаковываются сами, а `epub/mobi/pdf` сохраняются как есть.
+## What it does
 
-Ранжирование детерминированное. Точное совпадение названия идёт первым; если таких несколько, выше оказывается более популярное издание.
+- `search_books` searches by title and author and returns a ranked list: id, title, author, formats, size, download count, short description.
+- `download_book` downloads a book in the requested format into the downloads folder and returns the path. The `fb2/txt/rtf/html/doc` formats come from Flibusta in zip archives and are unpacked automatically, while `epub/mobi/pdf` are saved as is.
 
-## Установка
+Ranking is deterministic. An exact title match comes first; if several editions match, the more popular one ranks higher.
+
+## Install
 
 ### Claude Code
 
-Опубликован в npm:
+Published on npm:
 
 ```bash
 claude mcp add flibusta -- npx -y flibusta-mcp
 ```
 
-Локальная сборка из клона:
+Or build locally from a clone:
 
 ```bash
 git clone https://github.com/vonavikon/flibusta-mcp.git
@@ -35,7 +37,7 @@ claude mcp add flibusta -- node "$PWD/dist/index.js"
 
 ### Claude Desktop
 
-Добавьте сервер в `claude_desktop_config.json`. На macOS это `~/Library/Application Support/Claude/claude_desktop_config.json`, на Windows — `%APPDATA%\Claude\claude_desktop_config.json`:
+Add the server to `claude_desktop_config.json`. On macOS it is `~/Library/Application Support/Claude/claude_desktop_config.json`, on Windows `%APPDATA%\Claude\claude_desktop_config.json`:
 
 ```json
 {
@@ -50,7 +52,7 @@ claude mcp add flibusta -- node "$PWD/dist/index.js"
 
 ### Cursor
 
-В `~/.cursor/mcp.json`:
+In `~/.cursor/mcp.json`:
 
 ```json
 {
@@ -60,49 +62,49 @@ claude mcp add flibusta -- node "$PWD/dist/index.js"
 }
 ```
 
-## Переменные окружения
+## Environment variables
 
-| Переменная | По умолчанию | Описание |
+| Variable | Default | Description |
 |---|---|---|
-| `FLIBUSTA_BASE` | `https://flibusta.is` | Основное зеркало Flibusta |
-| `FLIBUSTA_FALLBACK_BASE` | — | Запасное зеркало на случай, если основное не отвечает |
-| `FLIBUSTA_DOWNLOAD_DIR` | `~/Downloads` | Куда складывать скачанные книги |
+| `FLIBUSTA_BASE` | `https://flibusta.is` | Main Flibusta mirror |
+| `FLIBUSTA_FALLBACK_BASE` | not set | Backup mirror used when the main one does not respond |
+| `FLIBUSTA_DOWNLOAD_DIR` | `~/Downloads` | Where downloaded books are saved |
 
-Для Claude Desktop переменные задаются в поле `env` конфигурации сервера.
+For Claude Desktop, set the variables in the `env` field of the server config.
 
-## Использование
+## Usage
 
-Когда сервер подключён, задайте клиенту обычный запрос:
+Once the server is connected, ask the client in plain words:
 
-> Найди «Дюну» Фрэнка Герберта и скачай в fb2.
+> Find "Dune" by Frank Herbert and download it in fb2.
 
-Клиент вызовет `search_books`, выберет нужное издание и формат, а `download_book` положит файл в папку загрузок и вернёт путь.
+The client calls `search_books`, picks the right edition and format, and `download_book` saves the file to the downloads folder and returns the path.
 
-## Разработка
+## Development
 
 ```bash
-npm install      # зависимости
-npm test         # unit-тесты (vitest)
-npm run build    # сборка в dist/
+npm install      # dependencies
+npm test         # unit tests (vitest)
+npm run build    # build into dist/
 ```
 
-Проверить сервер вручную можно через MCP Inspector:
+You can try the server manually with MCP Inspector:
 
 ```bash
 npx @modelcontextprotocol/inspector node dist/index.js
 ```
 
-Структура исходников:
+Source layout:
 
-- `src/flibusta.ts` обращается к Flibusta через OPDS (пакет `flibusta`), нормализует ответ и достаёт id.
-- `src/rank.ts` отвечает за детерминированное ранжирование.
-- `src/download.ts` скачивает книгу и распаковывает zip-обёртку.
-- `src/index.ts` поднимает MCP-сервер и регистрирует инструменты.
+- `src/flibusta.ts` talks to Flibusta over OPDS (the `flibusta` package), normalizes the response and extracts ids.
+- `src/rank.ts` handles deterministic ranking.
+- `src/download.ts` downloads a book and unpacks the zip wrapper.
+- `src/index.ts` starts the MCP server and registers the tools.
 
-## Правовой момент
+## Legal note
 
-Flibusta раздаёт книги на условиях, которые в разных юрисдикциях оценивают по-разному. Пользуйтесь на свой риск и в рамках применимого законодательства. Сервер здесь — тонкий клиент над публичным OPDS-интерфейсом, он ничего не хранит.
+Flibusta distributes books under terms that different jurisdictions treat differently. Use it at your own risk and within applicable law. The server is a thin client over a public OPDS feed, it stores nothing.
 
-## Лицензия
+## License
 
 MIT © vonavikon

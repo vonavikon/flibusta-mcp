@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/flibusta-mcp)](https://www.npmjs.com/package/flibusta-mcp)
 [![GitHub](https://img.shields.io/badge/GitHub-vonavikon%2Fflibusta--mcp-181717?logo=github)](https://github.com/vonavikon/flibusta-mcp)
 
-[English](README.md) | Русский
+**RU** · [EN](README.md) · [中文](README.zh.md) · [Español](README.es.md) · [Français](README.fr.md)
 
 MCP-сервер для поиска и скачивания книг с [Flibusta](https://flibusta.is). Подключается к Claude Code, Claude Desktop и Cursor.
 

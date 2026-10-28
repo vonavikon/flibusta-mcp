@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/flibusta-mcp)](https://www.npmjs.com/package/flibusta-mcp)
 [![GitHub](https://img.shields.io/badge/GitHub-vonavikon%2Fflibusta--mcp-181717?logo=github)](https://github.com/vonavikon/flibusta-mcp)
+[![VirusTotal](https://img.shields.io/badge/VirusTotal-0%2F75_clean-brightgreen)](https://www.virustotal.com/gui/file/ec2fc67df04b53aaa756de08e5cd71038e58f6d36dc1163811d953dc9bbcf7fe)
 
 [RU](README.ru.md) · [EN](README.md) · [中文](README.zh.md) · [Español](README.es.md) · **Français**
 
